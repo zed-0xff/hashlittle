@@ -1,5 +1,10 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 3.0
+  NewCops: enable
 
 Style/StringLiterals:
   Enabled: true
@@ -11,3 +16,18 @@ Style/StringLiteralsInInterpolation:
 
 Layout/LineLength:
   Max: 120
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Metrics/CollectionLiteralLength:
+  Enabled: false
+
+Rake/Desc:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
