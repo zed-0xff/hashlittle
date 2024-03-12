@@ -28,33 +28,32 @@ static VALUE rb_hashlittle(int argc, VALUE *argv, VALUE self) {
 }
 
 static VALUE rb_hashlittle2(int argc, VALUE *argv, VALUE self) {
-  VALUE rb_key, rb_result;
-  uint32_t pb = 0;
-  uint32_t pc = 0;
+  VALUE rb_key, rb_seed;
+  uint32_t pc = 0, pb = 0;
+  uint64_t result;
 
-  rb_scan_args(argc, argv, "11", &rb_key, &rb_result);
+  // Accept an optional uint64 as seed
+  rb_scan_args(argc, argv, "11", &rb_key, &rb_seed);
 
-  if (NIL_P(rb_result)) {
-    rb_result = rb_ary_new2(2);
-  } else {
-    Check_Type(rb_result, T_ARRAY);
-    rb_ary_modify(rb_result);
+  // If a seed is provided, split it into two uint32_t parts for hashlittle2
+  if (!NIL_P(rb_seed)) {
+    Check_Type(rb_seed, T_FIXNUM);
+    uint64_t seed = NUM2ULL(rb_seed);
+    pb = (uint32_t)(seed >> 32); // High 32 bits
+    pc = (uint32_t)(seed & 0xFFFFFFFF); // Low 32 bits
   }
 
   Check_Type(rb_key, T_STRING);
   uint8_t *key = (uint8_t *)RSTRING_PTR(rb_key);
   long key_len = RSTRING_LEN(rb_key);
 
+  // Compute hash
   hashlittle2(key, key_len, &pc, &pb);
 
-  if( RARRAY_LEN(rb_result) < 2 ){
-      rb_ary_resize(rb_result, 2);
-  }
+  // Combine the pc and pb into a single uint64_t result
+  result = ((uint64_t)pb << 32) | pc;
 
-  rb_ary_store(rb_result, 0, UINT2NUM(pc));
-  rb_ary_store(rb_result, 1, UINT2NUM(pb));
-
-  return rb_result;
+  return ULL2NUM(result); // Return a single uint64 value
 }
 
 RUBY_FUNC_EXPORTED void

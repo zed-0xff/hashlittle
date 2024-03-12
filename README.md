@@ -16,11 +16,11 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     require 'hashlittle'
 
-    Hashlittle.hashlittle("test")      # 3188463954
-    Hashlittle.hashlittle("test", 123) # 1744958730 optional seed argument
+    Hashlittle.hashlittle("test")       # 3188463954
+    Hashlittle.hashlittle("test", 123)  # 1744958730 optional seed argument
 
-    Hashlittle.hashlittle2("test")     # [3188463954, 1839385006]
-    Hashlittle.hashlittle2("test", a)  # [3188463954, 1839385006] store result in a pre-existing array
+    Hashlittle.hashlittle2("test")      # 7900098448711227730
+    Hashlittle.hashlittle2("test", 123) # 5719842420682781962 optional seed argument
 
 ## Development
 
